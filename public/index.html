@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="assets/style.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.0-rc.0/web3.min.js"
+		integrity="sha512-/PTXSvaFzmO4So7Ghyq+DEZOz0sNLU4v1DP4gMOfY3kFu9L/IKoqSHZ6lNl3ZoZ7wT20io3vu/U4IchGcGIhfw=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src = "./abi/SmartContractABI.js"></script>
+	<title>Uniswap</title>
+</head>
+
+<body class="bg-body">
+		<div class="container justify-content-center align-items-center py-2">
+			<div class="row justify-content-center mt-3 pt-3">
+				<div class="col-md-6 ">
+
+					<div class="card p-5 m-2 mt-lg-5">
+						<form>
+							<div class="row justify-content-center mt-2">
+								<div class="col-6 token text-center">
+									Uniswap
+								</div>
+							</div>
+
+							<div class="form-group col-lg-12">
+
+								<input type="text" id="token_address1" class="form-control" type="text" placeholder="token_address"
+									placeholder="token_address">
+								<input type="text" id="amount_token_desire" class="form-control" type="text" placeholder="amount_token_desire"
+									placeholder="amount_token_desire">
+								<input type="text" id="amount_token_min" class="form-control" type="text"
+									placeholder="amount_token_min">
+								<input type="text" id="amount_ETH_min" class="form-control" type="text"
+									placeholder="amount_ETH_min">
+								<input type="text" id="to_address" class="form-control" type="text"
+									placeholder="to_address">
+								<input type="text" id="deadline1" class="form-control" type="text"
+									placeholder="deadline">
+							</div>
+
+							<div class="">
+								<div class="row" style="justify-content: center;">
+									<button type="button" class="btn btn-outline-info ml-0 mb-4"
+										onclick="addEthLiquidity()">Add ETH Liquidity</button>
+								</div>
+
+							</div>
+
+							<div class="form-group col-lg-12">
+
+								<input type="text" id="token_address2" class="form-control" type="text"
+									placeholder="token_address">
+								<input type="text" id="amountsIn" class="form-control" type="text"
+									placeholder="amountsIn">
+								<input type="text" id="amounts_out_min" class="form-control" type="text"
+									placeholder="amounts_out_min">
+								<input type="text" id="deadline2" class="form-control" type="text"
+									placeholder="deadline">
+							</div>
+
+							<div class="">
+								<div class="row" style="justify-content: center;">
+									<button type="button" class="btn btn-outline-info ml-0 mb-4"
+										onclick="convertTokenToEth()">Convert Token-ETH</button>
+								</div>
+
+							</div>
+
+							<div class="form-group col-lg-12">
+
+								<input type="text" id="token_address3" class="form-control" type="text"
+									placeholder="token_address">
+							</div>
+
+							<div class="">
+								<div class="row" style="justify-content: center;">
+									<button type="button" class="btn btn-outline-info ml-0 mb-4"
+										onclick="claim_Eth()">Claim Your ETH</button>
+								</div>
+
+							</div>
+
+						</form>
+					</div>
+					<div class="container">
+
+
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		</div>
+
+	</section>
+
+	<script>
+		var token_address1 = document.getElementById("token_address1")
+		var amount_token_desire = document.getElementById("amount_token_desire")
+		var amount_token_min = document.getElementById("amount_token_min")
+		var amount_ETH_min = document.getElementById("amount_ETH_min")
+		var to_address = document.getElementById("to_address")
+		var deadline1 = document.getElementById("deadline1")
+		var token_address2 = document.getElementById("token_address2")
+		var amountsIn = document.getElementById("amountsIn")
+		var amounts_out_min = document.getElementById("amounts_out_min")
+		var deadline2 = document.getElementById("deadline2")
+		var token_address3 = document.getElementById("token_address3")
+
+		var current_address;
+
+
+		async function CheckMetamaskConnection() {
+
+			// Modern dapp browsers...
+			if (window.ethereum) {
+				web3 = new Web3(window.ethereum);
+				ethereum.request({
+					method: 'eth_accounts',
+				}).then((result) => {
+					current_address = result[0]
+					console.log(current_address)
+				});
+				try {
+					// Request account access if needed
+					await ethereum.enable();
+					console.log('connected')
+
+					return true;
+				} catch (error) {
+					// User denied account access...
+					return false;
+				}
+			} else if (window.web3) {
+				window.web3 = new Web3(web3.currentProvider);
+				return true;
+			}
+			// Non-dapp browsers...
+			else {
+				console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+				return false;
+			}
+		}
+
+		var SmartContractAddress = '0xFfe94e106861022B7eb108c5433e1bA935106FD6';
+
+		var myContract;
+
+		$(document).ready(async function () {
+			var IsMetamask = await CheckMetamaskConnection();
+
+			if (IsMetamask) {
+				myContract = new web3.eth.Contract(SmartContractABI, SmartContractAddress);
+
+				console.log(myContract)
+			}
+		})
+	</script>
+
+	<script>
+
+		function addEthLiquidity() {
+			console.log(token_address1.value, amount_token_desire.value, amount_token_min.value, amount_ETH_min, to_address.value,deadline1.value)
+			myContract.methods.addEthLiquidity(token_address1.value, amount_token_desire.value, amount_token_min.value, amount_ETH_min.value, to_address.value,deadline1.value).send({ from: current_address, value: amount_token_desire.value }).then((res) => {
+				console.log(res)
+			});
+		}
+		// web3.utils.toWei(amount_token_desire.value.toString())
+
+		function convertTokenToEth() {
+			console.log(token_address2.value, amountsIn.value, amounts_out_min.value, deadline2.value)
+			myContract.methods.convertTokenToEth(token_address2.value, amountsIn.value, amounts_out_min.value, deadline2.value).send({ from: current_address }).then((res) => {
+				console.log(res)
+			});
+		}
+
+		function claim_Eth() {
+			console.log(token_address3.value)
+			myContract.methods.claim_Eth(token_address3.value).send({ from: current_address }).then((res) => {
+				console.log(res)
+			});
+		}
+
+
+	</script>
+
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

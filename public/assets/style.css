@@ -1,0 +1,48 @@
+.bg-body {
+  background: rgb(235, 237, 238);
+  /* background-image: url("images/Untitled\ design.png"); */
+  background: linear-gradient(rgb(153, 142, 39), rgb(172, 38, 38)) fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+}
+.bg-white {
+  background: rgb(235, 237, 238);
+  margin-top: 5rem !important;
+}
+.form-control{
+  margin-top: 9px;
+}
+button.btn{
+  margin-left: 10rem;
+  margin-top: 5px;
+}
+.token {
+  font-weight: 700;
+  color: rgb(219, 187, 130);
+  /* width: 10px; */
+  border: 1px solid;
+  border-radius: 50px;
+}
+.nav-bg {
+  background: linear-gradient(rgb(32 40 69), rgb(71, 114, 117)) fixed;
+}
+.card {
+  border: 1.4px solid rgb(128, 127, 124);
+  border-radius: 15px;
+  background: transparent;
+}
+label {
+  color: aliceblue;
+}
+#message2{
+  margin-top: 5px;
+}
+#index{
+  margin-top: 5px;
+
+}
+#add1{
+  margin-top: 5px;
+  
+}
